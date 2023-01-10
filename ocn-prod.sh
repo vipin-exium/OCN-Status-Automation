@@ -75,14 +75,14 @@ serverfile=/home/${current_username}/ocn_automation/servers
 servernamefile=/home/${current_username}/ocn_automation/servername
 filename=$serverfile
 while read line; do
-    sleep 30
+    sleep 10
     echo
     currentservername=$(cat $servernamefile | awk '{print $1,$2}' | sed -n $i'p')
     # connect to the corresponding ocn
     echo "---------------Connecting to OCN $line [$currentservername] ---------------"
     echo "--------------- Connecting to $line [$currentservername] ---------------" >> $detailedlogfile
     exium-cli connect -s $line
-    sleep 30
+    sleep 10
     # check current connection status of the client
     connectionstatusocn=$(exium-cli status | grep Active | cut -d ":" -f 2 | sed 's/ //g')
     if [ $connectionstatusocn = 'Active' ];
@@ -104,7 +104,7 @@ while read line; do
         cat $pingdnsfile | tail -n 2 | head -n1 >> $slackrawdnsfile
         echo >> $slackrawdnsfile
         echo >> $detailedlogfile
-        sleep 30
+        sleep 10
         # pinging SPA 10.0.0.5
         echo "---------------Ping Result For SPA - $line [$currentservername] ---------------" >> $detailedlogfile
         ping -c 10 10.0.0.5 > $pingspafile
@@ -113,7 +113,7 @@ while read line; do
         cat $pingspafile | tail -n 2 | head -n1 >> $slackrawspafile
         echo >> $detailedlogfile
         echo >> $slackrawspafile
-        sleep 30
+        sleep 10
         # Checking Internet connection
         echo "---------------Checking Internet Connection---------------"
         wget -q --spider http://www.google.com
@@ -138,7 +138,7 @@ while read line; do
         # connect to the same ocn for the second time
         echo "+Connecting to OCN $line [$currentservername] ---[Second Time]---"
         exium-cli connect -s $line
-        sleep 30
+        sleep 10
         # check current connection status of the client
         connectionstatusocnsecond=$(exium-cli status | grep Active | cut -d ":" -f 2 | sed 's/ //g')
         if [ $connectionstatusocnsecond = 'Active' ];
@@ -162,7 +162,7 @@ while read line; do
             cat $pingdnsfile | tail -n 2 | head -n1 >> $slackrawdnsfile
             echo >> $slackrawdnsfile
             echo >> $detailedlogfile
-            sleep 30
+            sleep 10
             # pinging SPA 10.0.0.5
             echo "---------------Ping Result For SPA - $line [$currentservername] ---[Second Time]------------------" >> $detailedlogfile
             ping -c 10 10.0.0.5 > $pingspafile
@@ -171,7 +171,7 @@ while read line; do
             cat $pingspafile | tail -n 2 | head -n1 >> $slackrawspafile
             echo >> $detailedlogfile
             echo >> $slackrawspafile
-            sleep 30
+            sleep 10
             # Checking Internet connection
             echo "+Checking Internet Connection ---[Second Time]---"
             wget -q --spider http://www.google.com
